@@ -15,7 +15,10 @@ if (!file.exists("testing.csv")){
 originalTraining <- read.csv("training.csv")
 originalTesting <- read.csv("testing.csv")
 ```
-</br>
+
+<br />
+
+
 
 ##Abstract
 
@@ -23,7 +26,7 @@ originalTesting <- read.csv("testing.csv")
 
 Using the [Weight Lifting Exercises data set](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises), I clean the data, separate the [training set provided](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv) into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the test set to get an out of sample error estimate. I estimate the error rate to be 0.6%.
 
-</br>
+<br />
 
 ##Cleaning the Data
 
@@ -41,7 +44,7 @@ originalTraining <- originalTraining[, columns]
 originalTesting <- originalTesting[, columns]
 ```
 
-</br>
+<br />
 
 On the original training set, two more operations were performed. First, I removed the first 7 columns since they were not relevant for this exercise. They consist of IDs, timestamps, and other information that does not determine how an exercise is being performed.
 
@@ -50,13 +53,13 @@ On the original training set, two more operations were performed. First, I remov
 The second operation involved removing outliers. After making many exploratory plots, the rows 5373 and 9274 were found to have significantly high values in a few variables, and as such I removed them from the training set. Here is an example for each of these rows:
 
 
-```{r outlierplot, fig.height = 4, fig.show = "hold"}
+```{r outlierplot, fig.height = 4, fig.keep = "last", fig.width = 7, fig.align='center', results='hold', fig.show = "hold"}
 par(mfrow = c(1, 2))
 with(originalTraining, plot(gyros_forearm_x, main = "gyros_forearm_x by index"))
 with(originalTraining, plot(magnet_dumbbell_y, main = "magnet_dumbbell_y by index"))
 ```
 
-</br>
+<br />
 
 Now I clean the training set:
 
@@ -65,7 +68,7 @@ Now I clean the training set:
 ```{r cleantraining}
 originalTraining <- originalTraining[-c(5373, 9274), -c(1:7)]
 ```
-</br>
+<br />
 
 
 ##Machine Learning Algorithm
@@ -83,7 +86,7 @@ Having cleaned the training set, I can now divide it in two:
 * a test set, composed of 40% of the observations, on which I will get my out of sample error estimate.
 
 
-</br>
+<br />
 
 ```{r partition}
 set.seed(123)
@@ -98,7 +101,7 @@ test <- originalTraining[-inTrain,]
 Since the `randomForest` function in the `randomForest` package performs cross-validation by itself (bootstrapping), there is no need to create a validation set. We choose to do a random forest model because of its high accuracy and because the outcome is a multi-class variable.
 
 
-</br>
+<br />
 
 The model I chose to fit is the following:
 
@@ -114,7 +117,7 @@ modrf
 
 This model predicts an out-of-bag error rate of `r "0.6%"`.
 
-</br>
+<br />
 
 
 ##Out of Sample Error
@@ -143,7 +146,7 @@ confusionMatrix(trainpred, train$classe)$overall[1]
 I get an accuracy of 1, which means the error rate is 0. Since this was the set used to train the model, its error rate is an optimistic estimate of the actual error rate. I expect the error rate to be higher than 0.   
   
   
-</br>
+<br />
   
   
 A better estimate of the error rate would be the out of sample error rate. To calculate it, I now use the test set which is composed of the 40% of the original training set that was not used to train the model.
