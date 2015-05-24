@@ -1,8 +1,3 @@
----
-output:
-  html_document:
-    keep_md: yes
----
 #Predicting weight lifting exercises
 ####André Martinez Lima
 ####May 2015
