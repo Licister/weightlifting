@@ -1,8 +1,7 @@
 ---
 title: "Predicting weight lifting exercises"
-author: "AndrÃ© Martinez Lima"
+author: "André Martinez Lima"
 date: "May 22, 2015"
-output: html_document
 ---
 
 ```{r libraries, echo = FALSE, results='hide', message = FALSE, warning= FALSE}
