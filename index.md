@@ -1,25 +1,9 @@
----
-output:
-  html_document:
-    keep_md: yes
----
 #Predicting weight lifting exercises
-####André Martinez Lima
+####AndrÃ© Martinez Lima
 ####May 2015
 
 
-```{r libraries, echo = FALSE, results='hide', message = FALSE, warning= FALSE}
-library(caret)
-library(randomForest)
-if (!file.exists("training.csv")){
-      download.file("http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv", destfile = "training.csv")
-}
-if (!file.exists("testing.csv")){
-      download.file("http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv", destfile = "testing.csv")
-}
-originalTraining <- read.csv("training.csv")
-originalTesting <- read.csv("testing.csv")
-```
+
 
 <br />
 
@@ -43,7 +27,8 @@ The original training set is stored in the `originalTraining` object, and the or
 The data is composed of 19622 observations of 160 variables. However, many of these variables do not have any values in the [final test set provided](http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv). As such, I started by removing the columns where all the observations for that particular variable were missing (NAs). These columns were removed from both training and test sets.
 
 
-```{r removecolumns}
+
+```r
 columns <- which(!apply (is.na(originalTesting), 2, all))
 originalTraining <- originalTraining[, columns]
 originalTesting <- originalTesting[, columns]
@@ -58,11 +43,14 @@ On the original training set, two more operations were performed. First, I remov
 The second operation involved removing outliers. After making many exploratory plots, the rows 5373 and 9274 were found to have significantly high values in a few variables, and as such I removed them from the training set. Here is an example for each of these rows:
 
 
-```{r outlierplot, fig.height = 4, fig.keep = "last", fig.width = 7, fig.align='center', results='hold', fig.show = "hold"}
+
+```r
 par(mfrow = c(1, 2))
 with(originalTraining, plot(gyros_forearm_x, main = "gyros_forearm_x by index"))
 with(originalTraining, plot(magnet_dumbbell_y, main = "magnet_dumbbell_y by index"))
 ```
+
+<img src="index_files/figure-html/outlierplot-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 <br />
 
@@ -70,7 +58,8 @@ Now I clean the training set:
 
 
 
-```{r cleantraining}
+
+```r
 originalTraining <- originalTraining[-c(5373, 9274), -c(1:7)]
 ```
 <br />
@@ -93,7 +82,8 @@ Having cleaned the training set, I can now divide it in two:
 
 <br />
 
-```{r partition}
+
+```r
 set.seed(123)
 inTrain <- createDataPartition(y = originalTraining$classe, p = 0.6, list = FALSE)
 train <- originalTraining[inTrain,]
@@ -112,15 +102,34 @@ The model I chose to fit is the following:
 
 
 
-```{r forest}
+
+```r
 set.seed(123)
 modrf <- randomForest(classe ~., data = train)
 modrf
 ```
 
+```
+## 
+## Call:
+##  randomForest(formula = classe ~ ., data = train) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 7
+## 
+##         OOB estimate of  error rate: 0.6%
+## Confusion matrix:
+##      A    B    C    D    E  class.error
+## A 3347    0    0    0    1 0.0002986858
+## B   13 2260    4    0    1 0.0079016681
+## C    0   18 2034    2    0 0.0097370983
+## D    1    0   23 1905    1 0.0129533679
+## E    0    0    2    5 2158 0.0032332564
+```
 
 
-This model predicts an out-of-bag error rate of `r "0.6%"`.
+
+This model predicts an out-of-bag error rate of 0.6%.
 
 <br />
 
@@ -139,9 +148,15 @@ First, I will calculate the error rate in the training set used to train the mod
 
 
 
-```{r trainerror}
+
+```r
 trainpred <- predict(modrf, train)
 confusionMatrix(trainpred, train$classe)$overall[1]
+```
+
+```
+## Accuracy 
+##        1
 ```
 
 
@@ -160,16 +175,22 @@ A better estimate of the error rate would be the out of sample error rate. To ca
 
 
 
-```{r testerror}
+
+```r
 testpred <- predict(modrf, test)
 confusionMatrix(testpred, test$classe)$overall[1]
+```
+
+```
+##  Accuracy 
+## 0.9938815
 ```
 
 
 
 
 
-The estimated error rate is then 1 minus 0.9939, which is `r 1 - 0.9939`, or `r (1 - 0.9939) * 100`%. This value is consistent with the out-of-bag error rate returned by the model.
+The estimated error rate is then 1 minus 0.9939, which is 0.0061, or 0.61%. This value is consistent with the out-of-bag error rate returned by the model.
 
 
 
