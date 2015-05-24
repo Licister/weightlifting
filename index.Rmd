@@ -1,8 +1,7 @@
----
-title: "Predicting weight lifting exercises"
-author: "André Martinez Lima"
-date: "May 22, 2015"
----
+#Predicting weight lifting exercises
+####André Martinez Lima
+####May 2015
+
 
 ```{r libraries, echo = FALSE, results='hide', message = FALSE, warning= FALSE}
 library(caret)
@@ -16,17 +15,17 @@ if (!file.exists("testing.csv")){
 originalTraining <- read.csv("training.csv")
 originalTesting <- read.csv("testing.csv")
 ```
+</br>
+
+##Abstract
 
 
-#Abstract
 
-
-
-Using the [Weight Lifting Exercises data set](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises), I clean the data, separate the [training set provided](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv) into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the validation set to get an out of sample error estimate. I estimate the error rate to be 0.6%.
+Using the [Weight Lifting Exercises data set](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises), I clean the data, separate the [training set provided](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv) into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the test set to get an out of sample error estimate. I estimate the error rate to be 0.6%.
 
 </br>
 
-#Cleaning the Data
+##Cleaning the Data
 
 
 
@@ -51,7 +50,7 @@ On the original training set, two more operations were performed. First, I remov
 The second operation involved removing outliers. After making many exploratory plots, the rows 5373 and 9274 were found to have significantly high values in a few variables, and as such I removed them from the training set. Here is an example for each of these rows:
 
 
-```{r outlierplot, fig.height = 4}
+```{r outlierplot, fig.height = 4, fig.show = "hold"}
 par(mfrow = c(1, 2))
 with(originalTraining, plot(gyros_forearm_x, main = "gyros_forearm_x by index"))
 with(originalTraining, plot(magnet_dumbbell_y, main = "magnet_dumbbell_y by index"))
@@ -69,7 +68,7 @@ originalTraining <- originalTraining[-c(5373, 9274), -c(1:7)]
 </br>
 
 
-#Machine Learning Algorithm
+##Machine Learning Algorithm
 
 
 
@@ -118,7 +117,7 @@ This model predicts an out-of-bag error rate of `r "0.6%"`.
 </br>
 
 
-#Out of Sample Error
+##Out of Sample Error
 
 
   
