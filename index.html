@@ -72,7 +72,7 @@ img {
 </div>
 <div id="abstract" class="section level2">
 <h2>Abstract</h2>
-<p>Using the <a href="http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises">Weight Lifting Exercises data set</a>, I clean the data, separate the <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">training set provided</a> into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the test set to get an out of sample error estimate. I estimate the error rate to be 0.6%.</p>
+<p>Using the <a href="http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises">Weight Lifting Exercises data set</a>, I clean the data and separate the <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">training set provided</a> into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the test set to get an out of sample error estimate. I estimate the error rate to be 0.6%.</p>
 <p><br /></p>
 </div>
 <div id="cleaning-the-data" class="section level2">
@@ -96,7 +96,7 @@ with(originalTraining, plot(magnet_dumbbell_y, main = &quot;magnet_dumbbell_y by
 </div>
 <div id="machine-learning-algorithm" class="section level2">
 <h2>Machine Learning Algorithm</h2>
-<p>Having cleaned the training set, I can now divide it in two:</p>
+<p>Having cleaned the original training set, I can now divide it in two:</p>
 <ul>
 <li>a training set, composed of 60% of the observations, on which I will train the model;</li>
 <li>a test set, composed of 40% of the observations, on which I will get my out of sample error estimate.</li>
@@ -106,7 +106,7 @@ with(originalTraining, plot(magnet_dumbbell_y, main = &quot;magnet_dumbbell_y by
 inTrain &lt;- createDataPartition(y = originalTraining$classe, p = 0.6, list = FALSE)
 train &lt;- originalTraining[inTrain,]
 test &lt;- originalTraining[-inTrain,]</code></pre>
-<p>Since the <code>randomForest</code> function in the <code>randomForest</code> package performs cross-validation by itself (bootstrapping), there is no need to create a validation set. We choose to do a random forest model because of its high accuracy and because the outcome is a multi-class variable.</p>
+<p>Since the <code>randomForest</code> function in the <code>randomForest</code> package performs cross-validation by itself (bootstrapping), there is no need to create a validation set. I chose to do a random forest model because of its high accuracy and because the outcome is a multi-class variable.</p>
 <p><br /></p>
 <p>The model I chose to fit is the following:</p>
 <pre class="r"><code>set.seed(123)

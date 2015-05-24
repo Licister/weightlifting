@@ -24,7 +24,7 @@ originalTesting <- read.csv("testing.csv")
 
 
 
-Using the [Weight Lifting Exercises data set](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises), I clean the data, separate the [training set provided](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv) into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the test set to get an out of sample error estimate. I estimate the error rate to be 0.6%.
+Using the [Weight Lifting Exercises data set](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises), I clean the data and separate the [training set provided](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv) into a training set (60%) and a test set (40%). I then train a random forest model using the training set, and use the test set to get an out of sample error estimate. I estimate the error rate to be 0.6%.
 
 <br />
 
@@ -77,7 +77,7 @@ originalTraining <- originalTraining[-c(5373, 9274), -c(1:7)]
 
 
 
-Having cleaned the training set, I can now divide it in two:   
+Having cleaned the original training set, I can now divide it in two:   
 
 
 
@@ -98,7 +98,7 @@ test <- originalTraining[-inTrain,]
 
 
 
-Since the `randomForest` function in the `randomForest` package performs cross-validation by itself (bootstrapping), there is no need to create a validation set. We choose to do a random forest model because of its high accuracy and because the outcome is a multi-class variable.
+Since the `randomForest` function in the `randomForest` package performs cross-validation by itself (bootstrapping), there is no need to create a validation set. I chose to do a random forest model because of its high accuracy and because the outcome is a multi-class variable.
 
 
 <br />
