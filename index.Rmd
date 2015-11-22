@@ -115,7 +115,7 @@ modrf
 
 
 
-This model predicts an out-of-bag error rate of `r "0.6%"` .
+This model predicts an out-of-bag error rate of `r "0.6%"`.
 
 <br />
 
@@ -164,7 +164,7 @@ confusionMatrix(testpred, test$classe)$overall[1]
 
 
 
-The estimated error rate is then 1 minus 0.9939, which is `r 1 - 0.9939` , or `r (1 - 0.9939) * 100` %. This value is consistent with the out-of-bag error rate returned by the model.
+The estimated error rate is then 1 minus 0.9939, which is `r 1 - 0.9939`, or `r (1 - 0.9939) * 100`%. This value is consistent with the out-of-bag error rate returned by the model.
 
 
 
